@@ -1,0 +1,30 @@
+let running = true; // Variable to control script state
+let liked = 0;
+
+function humanLikeDelay(min, max) {
+    return Math.random() * (max - min) + min;
+}
+
+function scrollAndLike() {
+    if (!running) return;  // Stop script when turned off
+
+    window.scrollBy(0, 600); // Scroll down
+
+    let likeButtons = document.querySelectorAll("div[aria-label='Like']");
+
+    if (likeButtons.length > 0 && liked < Math.floor(Math.random() * 3) + 1) {
+        let randomIndex = Math.floor(Math.random() * likeButtons.length);
+        likeButtons[randomIndex].click();
+        liked++;
+        console.log(`Liked ${liked} post(s)`);
+    }
+
+    if (liked >= 3) {
+        liked = 0;  // Reset after 3 likes
+    }
+
+    setTimeout(scrollAndLike, humanLikeDelay(3000, 7000));  // Random delay 3-7 sec
+}
+
+// Start script when the page loads
+setTimeout(scrollAndLike, 5000);
